@@ -74,7 +74,7 @@ class CitizenUser(AbstractUser):
     email = models.EmailField()
     amka = models.CharField(max_length=11)
     date_of_birth = models.DateField()
-    REQUIRED_FIELDS = ['amka', 'date_of_birth']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'amka', 'date_of_birth']
     USERNAME_FIELD = 'username'
     objects = CitizenUserManager()
 

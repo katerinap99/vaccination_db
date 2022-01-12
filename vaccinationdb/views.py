@@ -106,7 +106,7 @@ class CertificateViewSet(viewsets.ModelViewSet):
 class CitizenViewSet(viewsets.ModelViewSet):
     queryset = models.Citizen.objects.all()
     serializer_class = serializers.CitizenSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def list(self, request):
         if request.user.is_superuser == 1:
