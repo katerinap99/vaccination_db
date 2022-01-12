@@ -32,7 +32,6 @@ const HomePage = () => {
 
     return (
         <div>
-            {user &&   <p>Hello {user.first_name}</p>}
             <p>You are logged to the home page!</p>
 
             <Button color='primary' onClick={logoutUser}>Logout</Button>

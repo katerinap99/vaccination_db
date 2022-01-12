@@ -36,6 +36,50 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    let registerUser = async (e )=> {
+        e.preventDefault()
+        let response = await fetch('http://127.0.0.1:8000/register/', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body:JSON.stringify({'user':{'first_name':e.target.first_name.value, 'last_name':e.target.last_name.value,
+            'username':e.target.username.value,'password':e.target.password.value, 'email':e.target.email.value,
+            'amka':e.target.amka.value,'date_of_birth':e.target.date_of_birth.value}})
+        })
+        let data = await response.json()
+
+        if(response.status === 201){
+            let response2 = await fetch('http://127.0.0.1:8000/citizenDetails/', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body:JSON.stringify({'full_name':e.target.first_name.value+" "+ e.target.last_name.value, 
+                'amka':e.target.amka.value,'date_of_birth':e.target.date_of_birth.value})
+            })
+            if(response2.status==201){
+                let response = await fetch('http://127.0.0.1:8000/token/', {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
+                })
+                let data = await response.json()
+                setAuthTokens(data)
+                setUser(jwt_decode(data.access))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+                history('/')
+            }
+        }else{
+            alert('Something went wrong!')
+        }
+    }
+
 
     let logoutUser = () => {
         setAuthTokens(null)
@@ -75,6 +119,7 @@ export const AuthProvider = ({children}) => {
         user:user,
         authTokens:authTokens,
         loginUser:loginUser,
+        registerUser: registerUser,
         logoutUser:logoutUser,
     }
 
