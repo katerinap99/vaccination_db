@@ -94,6 +94,16 @@ const NavBar = () => {
                     </React.Fragment>
                 ))}
             </Typography>
+            <Typography variant='h6'>  
+            </Typography>
+            <Tooltip title='Certificates'>
+              <IconButton id='cert' component={Link} to='/issueCertificate'>
+                <img
+                  src=''
+                  alt='Certificate'
+                />
+              </IconButton>
+            </Tooltip>
             <Tooltip className='logout' title='Logout'>
               <ExitToAppIcon id='logout-icon' onClick={logoutUser}/>
             </Tooltip>

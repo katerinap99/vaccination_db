@@ -93,7 +93,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = models.CitizenUser
         # List all of the fields that could possibly be included in a request
         # or response, including fields specified explicitly above.
-        fields = ['email', 'username', 'amka', 'password','date_of_birth', 'token']
+        fields = ['email', 'username', 'amka', 'password','date_of_birth', 'token', 'first_name', 'last_name']
 
     def create(self, validated_data):
         # Use the `create_user` method we wrote earlier to create a new user.

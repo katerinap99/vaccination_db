@@ -5,9 +5,9 @@ import { AuthProvider } from './context/AuthContext'
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import CertificatePage from './pages/CertificatePage'
 
 //Components
-import Header from './components/Header'
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
           <Routes>
           <Route element={<HomePage />} path="/" exact/>
           <Route element={<LoginPage />} path="/login"/>
+          <Route element={<CertificatePage />} path="/issueCertificate"/>
           </Routes>
         </AuthProvider>
       </Router>

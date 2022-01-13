@@ -65,7 +65,7 @@ class CertificateViewSet(viewsets.ModelViewSet):
     def user_has_requested_certificate(self, certificate_type, user_amka):
         if certificate_type == 'vax':
             user_appointments = models.Vaccination.objects.filter(amka=user_amka, took_place=1)
-            if len(user_appointments)>2:
+            if len(user_appointments) >= 1:
                 return True
             return False
         elif certificate_type == 'test':  # certification of negative test
@@ -78,7 +78,7 @@ class CertificateViewSet(viewsets.ModelViewSet):
                     if date < (date.today())-timedelta(days=7):
                         return False
                     return True
-        elif certificate_type == 'desease': #certification of positive test: disease
+        elif certificate_type == 'desease': # certification of positive test: disease
             positive_user_tests = models.Test.objects.filter(amka=user_amka, result='positive')
             if len(positive_user_tests) > 0:
                 return True
