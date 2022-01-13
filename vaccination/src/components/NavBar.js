@@ -89,7 +89,7 @@ const NavBar = (statement) => {
             </Tooltip>
              <Typography variant='h6'>
                
-             {(user.user_id == 1) ? 
+             {(user.is_superuser == 1) ? 
              <React.Fragment>
                 <div>Logged in as an administrator!</div>
              </React.Fragment>
