@@ -10,6 +10,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import NavBar from "../components/NavBar";
+import "../components/NavBar.css";
 
 const HomePage = () => {
   let [notes, setNotes] = useState([]);
@@ -92,11 +94,9 @@ const HomePage = () => {
 
   return (
     <React.Fragment>
-      <div>
+      <NavBar />
+      <div style={{marginTop: '100px'}}>
         <p>You are logged to the home page!</p>
-        <Button color="primary" onClick={logoutUser}>
-          Logout
-        </Button>
         <ul>
           {notes.map((note) => (
             <React.Fragment>
