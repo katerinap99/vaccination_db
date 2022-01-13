@@ -88,15 +88,16 @@ const NavBar = (statement) => {
               </IconButton>
             </Tooltip>
              <Typography variant='h6'>
-               
              {(user.is_superuser == 1) ? 
              <React.Fragment>
                 <div>Logged in as an administrator!</div>
              </React.Fragment>
              : 
-                <React.Fragment>
-                <div>Hi {notes[0].full_name}! How can we help you today?</div>
-                </React.Fragment>
+             notes.map((note) => (
+              <React.Fragment>
+                <div>Hi {note.full_name}! How can we help you today? </div>
+              </React.Fragment>
+            ))
               }
                 </Typography>
             <Tooltip className='logout' title='Logout'>
