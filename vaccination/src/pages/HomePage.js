@@ -1,6 +1,11 @@
 import { Button } from '@material-ui/core'
 import React, {useState, useEffect, useContext} from 'react'
 import AuthContext from '../context/AuthContext'
+import './HomePage.css'
+import '../components/NavBar.css'
+
+//components
+import NavBar from '../components/NavBar.js';
 
 const HomePage = () => {
     let [notes, setNotes] = useState([])
@@ -31,10 +36,10 @@ const HomePage = () => {
     }
 
     return (
-        <div>
-            <p>You are logged to the home page!</p>
-
-            <Button color='primary' onClick={logoutUser}>Logout</Button>
+        <React.Fragment>
+        <NavBar/>
+        <div className='info'>
+            <p>You are logged to the vaccination service!</p>
             <ul>
                 {notes.map(note => (
                     <React.Fragment>
@@ -45,6 +50,7 @@ const HomePage = () => {
                 ))}
             </ul>
         </div>
+    </React.Fragment>
     )
 }
 

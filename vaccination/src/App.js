@@ -5,6 +5,9 @@ import { AuthProvider } from './context/AuthContext'
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+
+//Components
+import Footer from './components/Footer';
 import Header from './components/Header'
 
 function App() {
@@ -12,7 +15,6 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-          {/* <Header/> */}
           <Routes>
           <Route element={<HomePage />} path="/" exact/>
           <Route element={<LoginPage />} path="/login"/>
