@@ -28,7 +28,10 @@ const HomePage = () => {
   let { authTokens, logoutUser, user } = useContext(AuthContext);
   useEffect(() => {
     getCitizenDetails();
-    getAvailableAppointmentsToVerify();
+    if (user.is_superuser == 1){
+      getAvailableAppointmentsToVerify();
+    }
+    
   }, []);
 
   let getCitizenDetails = async () => {
