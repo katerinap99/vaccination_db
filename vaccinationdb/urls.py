@@ -25,6 +25,7 @@ router.register(r'citizenDetails', views.CitizenViewSet)
 router.register(r'vaccination_spots', views.VaccinationSpotsViewSet)
 router.register(r'appointment', views.VaccinationViewSet)
 router.register(r'districts', views.DistrictViewSet)
+router.register(r'verifiableappointments', views.AppointmentsViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

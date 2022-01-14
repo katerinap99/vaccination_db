@@ -265,6 +265,11 @@ class VaccinationSpotHasHealthcareStaffViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 
+class AppointmentsViewSet(viewsets.ModelViewSet):
+    queryset = models.Vaccination.objects.filter(took_place=0)
+    serializer_class = serializers.VaccinationSerializer
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
 # auth views
 class RegistrationAPIView(APIView):
     # Allow any user (authenticated or not) to hit this endpoint.
