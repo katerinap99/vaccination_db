@@ -6,6 +6,7 @@ import DatePicker from "../components/DatePicker";
 import Grid from "@material-ui/core/Grid";
 import moment from "moment";
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,6 +14,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import NavBar from "../components/NavBar";
 import CitizenDetails from "../components/CitizenDetails";
+import AppointmentsTable from "../components/AppointmentsTable";
 import "../components/NavBar.css";
 import "./HomePage.css"
 
@@ -24,6 +26,7 @@ const HomePage = () => {
   let selectedSpotAddress ;
   let selectedVerifiedAppointment ;
   const [appointmentDetails, setAppointmentDetails] = useState([]);
+  const [appointments, setAppointments] = useState([]);
   const [availableSpots, setAvailableSpots] = useState([]);
   let { authTokens, logoutUser, user } = useContext(AuthContext);
   useEffect(() => {
@@ -151,6 +154,29 @@ const HomePage = () => {
     getAvailableAppointmentsToVerify();
   };
 
+  let getAppointments = async() => {
+    var url = "http://127.0.0.1:8000/appointment/";
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    let data = await response.json();
+
+    if (response.status === 200) {
+      setAppointments(data);
+      console.log(data)
+      if(data.length===0){
+        alert("No appointments found!");
+      }
+    } else {
+      alert("No appointments found!");
+    }
+  };
+
   let verifyAndReniew = async () => {
     verifyAppointment().then(
       refreshAppointments()
@@ -160,7 +186,7 @@ const HomePage = () => {
   return (
     <React.Fragment>
       <NavBar />
-      {(user.is_superuser == 0) ? 
+      {(user.is_superuser == 0) ? (<React.Fragment>
       <div style={{marginTop: '7%', marginLeft:'40%'}}>
         <p>You are logged to the home page!</p>
         <ul>
@@ -172,7 +198,23 @@ const HomePage = () => {
             </React.Fragment>
           ))}
         </ul>
-      </div>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          onClick={getAppointments}
+        >
+          View your appointments
+        </Button>
+        </div>
+        <div>
+        {Object.keys(appointments).length !== 0 && (
+        <AppointmentsTable details={appointments} /> 
+      )}</div>
+            <Typography variant='h6' style={{marginTop: '4%', marginLeft:'40%'}}>Or arrange an appointment
+            </Typography> 
+           </React.Fragment>
+      )
       : null }
       {(user.is_superuser == 0) ? 
       <Grid container spacing={3}>
