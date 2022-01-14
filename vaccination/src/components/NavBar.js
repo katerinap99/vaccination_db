@@ -87,6 +87,23 @@ const NavBar = (statement) => {
                 />
               </IconButton>
             </Tooltip>
+            <Typography variant='h6'>  
+            {notes.map(note => (
+                    <React.Fragment>
+                    <div key={note.amka} >Hi {note.full_name}! How can we help you today?</div>
+                    </React.Fragment>
+                ))}
+            </Typography>
+            <Typography variant='h6'>  
+            </Typography>
+            <Tooltip title='Certificates'>
+              <IconButton id='cert' component={Link} to='/issueCertificate'>
+                <img
+                  src=''
+                  alt='Certificate'
+                />
+              </IconButton>
+            </Tooltip>
              <Typography variant='h6'>
              {(user.is_superuser == 1) ? 
              <React.Fragment>

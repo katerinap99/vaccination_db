@@ -41,7 +41,7 @@ class CitizenUserManager(BaseUserManager):
     to create `User` objects.
     """
 
-    def create_user(self, username, email, amka, date_of_birth, password=None):
+    def create_user(self, username, email, amka, date_of_birth, first_name, last_name, password=None):
         """Create and return a `User` with an email, username and password."""
         if username is None or amka is None:
             raise TypeError('Users must have a username and amka.')
@@ -51,7 +51,8 @@ class CitizenUserManager(BaseUserManager):
         if email is None:
             raise TypeError('Users must have an email address.')
 
-        user = self.model(username=username, email=self.normalize_email(email), amka=amka, date_of_birth=date_of_birth)
+        user = self.model(username=username, email=self.normalize_email(email), amka=amka, date_of_birth=date_of_birth,
+                          first_name=first_name , last_name=last_name)
         user.set_password(password)
         user.save()
         return user

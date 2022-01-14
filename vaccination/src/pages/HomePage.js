@@ -107,20 +107,19 @@ const HomePage = () => {
           ))}
         </ul>
       </div>
-      <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+      <Grid container spacing={3}>
         <Grid
           container
           spacing={2}
           justify="center"
-          columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          <Grid item>
+          <Grid item xs="auto">
             <DistrictSelector onChange={(value) => setDistrict(value)} />
           </Grid>
-          <Grid item>
+          <Grid item xs="auto">
             <DatePicker onChange={(value) => setDate(value)} />
           </Grid>
-          <Grid item>
+          <Grid item xs="auto">
             <Button
               variant="contained"
               size="large"
