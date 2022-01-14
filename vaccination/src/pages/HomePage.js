@@ -14,17 +14,24 @@ import FormLabel from "@mui/material/FormLabel";
 import NavBar from "../components/NavBar";
 import CitizenDetails from "../components/CitizenDetails";
 import "../components/NavBar.css";
+import "./HomePage.css"
 
 const HomePage = () => {
   let [notes, setNotes] = useState([]);
   const [district, setDistrict] = useState([]);
   const [date, setDate] = useState([]);
+  const [appointmentsToVerify, setAppointmentsToVerify] = useState([]);
   let selectedSpotAddress ;
+  let selectedVerifiedAppointment ;
   const [appointmentDetails, setAppointmentDetails] = useState([]);
   const [availableSpots, setAvailableSpots] = useState([]);
   let { authTokens, logoutUser, user } = useContext(AuthContext);
   useEffect(() => {
     getCitizenDetails();
+    if (user.is_superuser == 1){
+      getAvailableAppointmentsToVerify();
+    }
+    
   }, []);
 
   let getCitizenDetails = async () => {
@@ -49,6 +56,10 @@ const HomePage = () => {
     selectedSpotAddress = event.target.value;
   };
 
+  const handleVerificationChange = (event) => {
+    selectedVerifiedAppointment = event.target.value;
+  }
+
   let getAvailableSpots = async () => {
     var url = new URL("http://127.0.0.1:8000/vaccination_spots/"),
       params = { district_name: district, date: date };
@@ -69,6 +80,27 @@ const HomePage = () => {
       setAvailableSpots(data);
     } else {
       alert("Please select a district and date!");
+    }
+  };
+
+  let getAvailableAppointmentsToVerify = async () => {
+    console.log(appointmentsToVerify)
+    var url = "http://127.0.0.1:8000/verifiableappointments/";
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    let data = await response.json();
+
+    if (response.status === 200) {
+      setAppointmentsToVerify(data);
+      console.log(data)
+    } else {
+      alert("No appointments left to verify!");
     }
   };
 
@@ -94,9 +126,41 @@ const HomePage = () => {
     }
   };
 
+  let verifyAppointment = async () => {
+    let url = "http://127.0.0.1:8000/appointment/" + selectedVerifiedAppointment + "/";
+    let response = await fetch(url, {
+        method:'PATCH',
+        headers:{
+            'Content-Type':'application/json',
+            Authorization: "Bearer " + String(authTokens.access),
+            'Access-Control-Allow-Origin': '*'
+        },
+    })
+    let data = await response.json()
+    console.log(data)
+    if(response.status === 200){
+        alert('Succesful Appointment Verification')
+          getAvailableAppointmentsToVerify()
+        
+    }else{
+        alert('Something went wrong!')
+    }
+  };
+
+  let refreshAppointments = async () => {
+    getAvailableAppointmentsToVerify();
+  };
+
+  let verifyAndReniew = async () => {
+    verifyAppointment().then(
+      refreshAppointments()
+    )
+  }
+
   return (
     <React.Fragment>
       <NavBar />
+      {(user.is_superuser == 0) ? 
       <div style={{marginTop: '7%', marginLeft:'40%'}}>
         <p>You are logged to the home page!</p>
         <ul>
@@ -109,6 +173,8 @@ const HomePage = () => {
           ))}
         </ul>
       </div>
+      : null }
+      {(user.is_superuser == 0) ? 
       <Grid container spacing={3}>
         <Grid
           container
@@ -133,6 +199,38 @@ const HomePage = () => {
           </Grid>
         </Grid>
       </Grid> 
+        : <Grid container spacing={3}>
+          <Grid
+          container
+          spacing={2}
+          justify="center">
+            <div className="admin-panel"> Please confirm any valid appointments!</div>
+            <React.Fragment>
+      <FormControl component="fieldset" style={{marginLeft: '35%', marginTop: '5%'}}>
+        <FormLabel component="legend">
+          Available Appointments to Verify!
+        </FormLabel>
+        <RadioGroup
+          aria-label="available_spots"
+          name="radio-buttons-group"
+          onChange={handleVerificationChange}
+        >
+          {appointmentsToVerify.map((rantebou) => (
+            <FormControlLabel
+              key={rantebou.vaccination_id}
+              value={rantebou.vaccination_id}
+              control={<Radio />}
+              label={rantebou.amka}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
+            <Button onClick={verifyAndReniew}>Verify</Button>
+            </React.Fragment>
+            <Grid>
+            </Grid>
+          </Grid>
+        </Grid> }
       {availableSpots.length>0  && (
     <React.Fragment>
       <FormControl component="fieldset" style={{marginLeft: '35%', marginTop: '5%'}}>
@@ -164,6 +262,7 @@ const HomePage = () => {
             </Button>
       </React.Fragment> )}
       {Object.keys(appointmentDetails).length !== 0 && <CitizenDetails details={appointmentDetails} /> }
+    
     </React.Fragment>
   );
 };

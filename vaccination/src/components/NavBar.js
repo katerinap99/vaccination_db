@@ -42,7 +42,7 @@ ElevationScroll.propTypes = {
   window: PropTypes.func
 };
 
-const NavBar = (statement) => {
+const NavBar = () => {
     let [notes, setNotes] = useState([])
     let {authTokens, logoutUser, user} = useContext(AuthContext)
 
@@ -120,14 +120,4 @@ const NavBar = (statement) => {
   );
 };
 
-// NavBar.propTypes = {
-//   logout: PropTypes.func.isRequired,
-//   auth: PropTypes.object.isRequired
-// };
-
-// const mapStateToProps = state => ({
-//   auth: state.auth
-// });
-
-// export default connect(mapStateToProps, { logout })(NavBar);
 export default NavBar;
