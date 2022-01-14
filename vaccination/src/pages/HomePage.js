@@ -5,12 +5,14 @@ import DistrictSelector from "../components/DistrictSelector";
 import DatePicker from "../components/DatePicker";
 import Grid from "@material-ui/core/Grid";
 import moment from "moment";
+import PropTypes from 'prop-types';
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import NavBar from "../components/NavBar";
+import CitizenDetails from "../components/CitizenDetails";
 import "../components/NavBar.css";
 
 const HomePage = () => {
@@ -18,7 +20,7 @@ const HomePage = () => {
   const [district, setDistrict] = useState([]);
   const [date, setDate] = useState([]);
   let selectedSpotAddress ;
-  let appointmentDetails = undefined;
+  const [appointmentDetails, setAppointmentDetails] = useState([]);
   const [availableSpots, setAvailableSpots] = useState([]);
   let { authTokens, logoutUser, user } = useContext(AuthContext);
   useEffect(() => {
@@ -84,7 +86,7 @@ const HomePage = () => {
     let data = await response.json()
 
     if(response.status === 201){
-        appointmentDetails = data;
+        setAppointmentDetails({ ...data, vax_spot: selectedSpotAddress  });
         console.log(appointmentDetails);
         alert('appointment set for selected date & spot!')
     }else{
@@ -95,7 +97,7 @@ const HomePage = () => {
   return (
     <React.Fragment>
       <NavBar />
-      <div style={{marginTop: '100px'}}>
+      <div style={{marginTop: '7%', marginLeft:'40%'}}>
         <p>You are logged to the home page!</p>
         <ul>
           {notes.map((note) => (
@@ -113,7 +115,7 @@ const HomePage = () => {
           spacing={2}
           justify="center"
         >
-          <Grid item xs="auto">
+          <Grid item xs="auto" style={{marginTop:'1%'}}>
             <DistrictSelector onChange={(value) => setDistrict(value)} />
           </Grid>
           <Grid item xs="auto">
@@ -124,16 +126,16 @@ const HomePage = () => {
               variant="contained"
               size="large"
               color="primary"
-              onClick={getAvailableSpots}
+              onClick={getAvailableSpots} style={{marginTop:'10%'}}
             >
               Check availability
             </Button>
           </Grid>
         </Grid>
       </Grid> 
-      {availableSpots.length>0  &&  appointmentDetails===undefined && (
+      {availableSpots.length>0  && (
     <React.Fragment>
-      <FormControl component="fieldset">
+      <FormControl component="fieldset" style={{marginLeft: '35%', marginTop: '5%'}}>
         <FormLabel component="legend">
           Available Spots in your district
         </FormLabel>
@@ -156,13 +158,18 @@ const HomePage = () => {
               variant="contained"
               size="large"
               color="primary"
-              onClick={makeAppointment}
+              onClick={makeAppointment} style={{marginTop: '7.5%'}}
             >
               Make Appointment 
             </Button>
       </React.Fragment> )}
+      {Object.keys(appointmentDetails).length !== 0 && <CitizenDetails details={appointmentDetails} /> }
     </React.Fragment>
   );
+};
+
+HomePage.propTypes = {
+  details: PropTypes.object
 };
 
 export default HomePage;
