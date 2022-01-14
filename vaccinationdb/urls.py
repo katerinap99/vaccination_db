@@ -26,6 +26,11 @@ router.register(r'vaccination_spots', views.VaccinationSpotsViewSet)
 router.register(r'appointment', views.VaccinationViewSet)
 router.register(r'districts', views.DistrictViewSet)
 router.register(r'verifiableappointments', views.AppointmentsViewSet)
+router.register(r'test', views.TestViewSet)
+router.register(r'testing_spot', views.TestingSpotViewSet)
+router.register(r'healthcare_stuff', views.HealthcareStaffViewSet)
+router.register('vaccines', views.VaccineViewSet)
+router.register('vaccine_manufacturers', views.VaccineManufacturerViewSet)
 
 
 urlpatterns = [

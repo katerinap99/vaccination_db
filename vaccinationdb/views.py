@@ -77,6 +77,14 @@ class CertificateViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
+    def destroy(self, request, pk=None):
+        instance = get_object_or_404(self.queryset, pk=pk)
+        if request.user.is_superuser == 0:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            serializer = self.serializer_class(instance)
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+
 
 class CitizenViewSet(viewsets.ModelViewSet):
     queryset = models.Citizen.objects.all()
@@ -96,6 +104,14 @@ class CitizenViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, pk=None):
+        instance = get_object_or_404(self.queryset, pk=pk)
+        if request.user.is_superuser == 0:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            serializer = self.serializer_class(instance)
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
 
 
 class VaccinationSpotsViewSet(viewsets.ModelViewSet):
@@ -121,6 +137,14 @@ class VaccinationSpotsViewSet(viewsets.ModelViewSet):
         available_spots = self.vax_spots_with_free_slots(vax_spots_in_district, requested_date)
         serializer = serializers.VaccinationSpotSerializer(available_spots, many=True)
         return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        instance = get_object_or_404(self.queryset, pk=pk)
+        if request.user.is_superuser == 0:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            serializer = self.serializer_class(instance)
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
 
 
 class VaccinationViewSet(viewsets.ModelViewSet):
@@ -196,11 +220,20 @@ class VaccinationViewSet(viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
+    def destroy(self, request, pk=None):
+        instance = get_object_or_404(self.queryset, pk=pk)
+        if request.user.is_superuser == 0:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            serializer = self.serializer_class(instance)
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+
 
 class DistrictViewSet(viewsets.ModelViewSet):
     queryset = models.District.objects
     serializer_class = serializers.DistrictSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
 
 
 class VaccineViewSet(viewsets.ModelViewSet):
@@ -209,10 +242,12 @@ class VaccineViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 
+
 class VaccineManufacturerViewSet(viewsets.ModelViewSet):
     queryset = models.VaccineManufacturer.objects
     serializer_class = serializers.VaccineManufacturerSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
 
 
 class TestViewSet(viewsets.ModelViewSet):
@@ -221,10 +256,12 @@ class TestViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 
+
 class TestingSpotViewSet(viewsets.ModelViewSet):
     queryset = models.TestingSpot.objects
     serializer_class = serializers.TestingSpotSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
 
 
 class HealthcareStaffViewSet(viewsets.ModelViewSet):
@@ -233,10 +270,12 @@ class HealthcareStaffViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 
+
 class VaccinationSpotHasHealthcareStaffViewSet(viewsets.ModelViewSet):
     queryset = models.VaccinationSpotHasHealthcareStaff.objects
     serializer_class = serializers.VaccinationSpotHasHealthcareStaffSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
 
 
 class AppointmentsViewSet(viewsets.ModelViewSet):
@@ -245,6 +284,8 @@ class AppointmentsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 # auth views
+
+
 class RegistrationAPIView(APIView):
     # Allow any user (authenticated or not) to hit this endpoint.
     permission_classes = (AllowAny,)
@@ -261,6 +302,7 @@ class RegistrationAPIView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
