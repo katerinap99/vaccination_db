@@ -20,14 +20,14 @@ const LoginPage = () => {
       <Grid container spacing={1}>
         <Grid item xs={12} sm={12} md={6}>
           <img
-            style={{ marginTop: "70px", width: "600px", height: "450px" }}
+            style={{ marginTop: "70px", width: "600px", height: "450px" , marginLeft: '6rem'}}
             src="static/images/vaccine.jpg"
           />
           <br />
         </Grid>
         <Grid item xs={12} sm={12} md={4} style={{ marginTop: "150px" }}>
-          <Card justify="center">
-            <Typography varient="h1">Please Login or Sign up</Typography>
+          <Card justify="center" variant="outlined">
+            <Typography varient="h1">Welcome! Please Login or Sign up</Typography>
 
             <form onSubmit={loginUser} style={{ textAlign: "center" }}>
               <TextField
@@ -36,6 +36,7 @@ const LoginPage = () => {
                 type="username"
                 label="Username"
                 variant="outlined"
+                style = {{marginTop: '0.5rem'}}
                 // helperText={errors.email}
                 // error={errors.email ? true: false}
                 fullWidth
@@ -46,8 +47,10 @@ const LoginPage = () => {
                 type="password"
                 label="Password"
                 variant="outlined"
+                style = {{marginTop: '0.5rem'}}
                 fullWidth
               />
+              <div style={{alignItems: 'center'}}>
               <Button
                 type="submit"
                 size="large"
@@ -56,9 +59,12 @@ const LoginPage = () => {
               >
                 Login
               </Button>
+              </div>
               <Divider variant="middle" />
             </form>
+            <div style={{alignItems: 'center'}}>
             <FormDialog registerUser={registerUser} />
+            </div>
           </Card>
         </Grid>
       </Grid>
@@ -99,9 +105,9 @@ const FormDialog = () => {
   };
 
   return (
-    <Fragment style={{ textAlign: "center" }}>
+    <Fragment style={{ alignItems: "center", textAlign: "center" }}>
       <Button
-        style={{ marginLeft: "195px" }}
+        style={{ marginLeft: '41%', marginTop: '0.5rem' }}
         variant="contained"
         size="large"
         color="primary"

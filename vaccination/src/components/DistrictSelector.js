@@ -8,7 +8,7 @@ import Select from '@material-ui/core/Select';
 const useStyles = makeStyles(theme => ({
   formControl: {
     //margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: '5rem',
     marginTop: '200px',
     marginLeft: '200px'
   },
@@ -34,6 +34,7 @@ export default function SimpleSelect(props) {
           value={props.gender}
           onChange={handleChange}
           label='District'
+          style ={{minWidth: '6rem'}}
         >
           <MenuItem value={'CEN_MAC'}>Central Macedonia</MenuItem>
           <MenuItem value={'EPI'}>Epirus</MenuItem>
