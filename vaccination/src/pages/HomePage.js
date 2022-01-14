@@ -12,7 +12,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import NavBar from "../components/NavBar";
-import Typography from '@material-ui/core/Typography';
 import CitizenDetails from "../components/CitizenDetails";
 import AppointmentsTable from "../components/AppointmentsTable";
 import "../components/NavBar.css";
