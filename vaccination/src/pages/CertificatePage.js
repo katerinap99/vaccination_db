@@ -22,17 +22,18 @@ const CertificatePage = () => {
             },
             body:JSON.stringify({'type':type})
         })
-        let data = await response.json()
-    
-        if(response.status === 201){
-            setCertDetails(data);
-            alert('Certificate issued!');
-        }else if(response.status===404){
-            alert('No matching certificate found')
+
+        if (response.status === 404){
+          alert('Not qualifie for this certificate')
         }
-        else if(response.status===400){
-          alert('Certificate already issued!')
-        }
+        else if (response.status === 201){
+          let data = await response.json()
+          setCertDetails(data);
+          alert('Certificate issued!');
+      }
+      else if(response.status===400){
+        alert('Certificate already issued!')
+      } 
       };
 
       let getCertificates = async () => {
