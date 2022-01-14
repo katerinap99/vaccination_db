@@ -6,11 +6,12 @@ import Typography from '@material-ui/core/Typography';
 import NavBar from "../components/NavBar";
 import DetailsTable from "../components/DetailsTable";
 import PropTypes from 'prop-types';
-
+import CertDetails from "../components/CertDetails";
 
 const CertificatePage = () => {
     let { authTokens } = useContext(AuthContext);
     let [certDetails, setCertDetails] = useState([]) ;
+    let [certificates, setCertificates] = useState([]) ;
     let issueCert = async (type) => {
         let response = await fetch('http://127.0.0.1:8000/certificate/', {
             method:'POST',
@@ -26,16 +27,55 @@ const CertificatePage = () => {
         if(response.status === 201){
             setCertDetails(data);
             alert('Certificate issued!');
-        }else{
+        }else if(response.status===404){
             alert('No matching certificate found')
+        }
+        else if(response.status===400){
+          alert('Certificate already issued!')
+        }
+      };
+
+      let getCertificates = async () => {
+        var url = new URL("http://127.0.0.1:8000/certificate/");
+        let response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + String(authTokens.access),
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+        let data = await response.json();
+    
+        if (response.status === 200) {
+          setCertificates(data);
+          if(data.length===0){
+            alert("No certificates found!");
+          }
+        } else {
+          alert("No certificates found!");
         }
       };
   return (
     <React.Fragment>
       <NavBar />
-      <Typography variant='h6' style={{marginTop: '12%', marginLeft:'35%'}}>Please select the type of certificate you wish to issue
-            </Typography>
-      <Grid container spacing={3} style={{marginTop: '4%', marginLeft:'25%'}}>
+      <div style={{ marginLeft: "40%", marginTop: "10%" }}>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          onClick={getCertificates}
+        >
+          View your certificates
+        </Button>
+      </div>
+      {Object.keys(certificates).length !== 0 && (
+        <CertDetails details={certificates} />
+      )}
+      <div >       
+      <Typography variant='h6' style={{marginTop: '4%', marginLeft:'35%'}}>Or select the type of certificate you wish to issue
+            </Typography> </div>
+      <Grid container spacing={3} style={{ marginLeft:'25%'}}>
         <Grid item xs="auto">
         <Button
               variant="contained"

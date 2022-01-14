@@ -12,32 +12,6 @@ from rest_framework import viewsets, permissions, status
 from . import serializers, models
 
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['first_name'] = user.first_name
-        token['last_name'] = user.last_name
-        token['is_superuser'] = user.is_superuser
-        # ...
-
-        return token
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-
-
-class JWTViewSet(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request):
-        content = {}
-        return Response(content)
-
-
 class CertificateViewSet(viewsets.ModelViewSet):
     queryset = models.Certificate.objects.all()
     serializer_class = serializers.CertificateSerializer
@@ -47,7 +21,7 @@ class CertificateViewSet(viewsets.ModelViewSet):
         if request.user.is_superuser == 1:
             serializer = self.serializer_class(self.queryset, many=True)
         else:
-            serializer = self.serializer_class(self.action)(self.queryset.filter(amka=request.user.amka), many=True)
+            serializer = self.serializer_class(self.queryset.filter(amka=request.user.amka), many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
@@ -288,18 +262,28 @@ class RegistrationAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
-class LoginAPIView(APIView):
-    permission_classes = (AllowAny,)
-    serializer_class = serializers.LoginSerializer
+        # Add custom claims
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+        token['is_superuser'] = user.is_superuser
+        # ...
 
-    def post(self, request):
-        user = request.data.get('user', {})
-        # Notice here that we do not call `serializer.save()` like we did for
-        # the registration endpoint. This is because we don't  have
-        # anything to save. Instead, the `validate` method on our serializer
-        # handles everything we need.
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
+        return token
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
+class JWTViewSet(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        content = {}
+        return Response(content)
+
