@@ -4,7 +4,6 @@ import AuthContext from "../context/AuthContext";
 import DistrictSelector from "../components/DistrictSelector";
 import DatePicker from "../components/DatePicker";
 import Grid from "@material-ui/core/Grid";
-import moment from "moment";
 import PropTypes from 'prop-types';
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -12,6 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import NavBar from "../components/NavBar";
+import Typography from '@material-ui/core/Typography';
 import CitizenDetails from "../components/CitizenDetails";
 import "../components/NavBar.css";
 import "./HomePage.css"
@@ -139,7 +139,7 @@ const HomePage = () => {
     let data = await response.json()
     console.log(data)
     if(response.status === 200){
-        alert('Succesful Appointment Verification')
+        alert('Successful Appointment Verification')
           getAvailableAppointmentsToVerify()
         
     }else{
@@ -199,21 +199,24 @@ const HomePage = () => {
           </Grid>
         </Grid>
       </Grid> 
-        : <Grid container spacing={3}>
+        : <Grid container spacing={2}>
           <Grid
+          item xs = {10}
           container
-          spacing={2}
+          spacing={1}
           justify="center">
-            <div className="admin-panel"> Please confirm any valid appointments!</div>
+            <Typography style={{marginTop: '10%'}}variant='h6' className="admin-panel"> Please confirm any valid appointments!
+            </Typography>
             <React.Fragment>
       <FormControl component="fieldset" style={{marginLeft: '35%', marginTop: '5%'}}>
-        <FormLabel component="legend">
+        <FormLabel component="legend" style={{marginTop:'10%'}}>
           Available Appointments to Verify!
         </FormLabel>
         <RadioGroup
           aria-label="available_spots"
           name="radio-buttons-group"
           onChange={handleVerificationChange}
+          style={{marginTop:'10%'}}
         >
           {appointmentsToVerify.map((rantebou) => (
             <FormControlLabel
@@ -225,10 +228,14 @@ const HomePage = () => {
           ))}
         </RadioGroup>
       </FormControl>
-            <Button onClick={verifyAndReniew}>Verify</Button>
+            <Button onClick={verifyAndReniew} 
+            style={{marginTop:'10%', height: '2rem', marginLeft: '2%'}}
+            color="primary"
+            variant="contained"
+            size="small">
+              Verify
+              </Button>
             </React.Fragment>
-            <Grid>
-            </Grid>
           </Grid>
         </Grid> }
       {availableSpots.length>0  && (

@@ -75,7 +75,7 @@ const NavBar = () => {
         <AppBar
           id='appbar'
           className='appbar'
-          style={{ background: '#5d9485' }}
+          color='primary'
         >
           <Toolbar id='toolbar'>
             <Tooltip className="logo" title='Go to home page'>
@@ -89,14 +89,16 @@ const NavBar = () => {
             </Tooltip>
             <Typography variant='h6'>  
             </Typography>
+            {(user.is_superuser == 0) ? 
             <Tooltip title='Certificates'>
-              <IconButton id='cert' component={Link} to='/issueCertificate'>
+              <IconButton style = {{color: 'white'}} id='cert' component={Link} to='/issueCertificate'>
                 <img
                   src=''
-                  alt='Certificate'
+                  alt='My Certificates'
                 />
               </IconButton>
             </Tooltip>
+            : null }
              <Typography variant='h6'>
              {(user.is_superuser == 1) ? 
              <React.Fragment>
@@ -105,7 +107,7 @@ const NavBar = () => {
              : 
              notes.map((note) => (
               <React.Fragment>
-                <div>Hi {note.full_name}! How can we help you today? </div>
+                <div style = {{marginLeft: '3rem'}}>Hi {note.full_name}! How can we help you today? </div>
               </React.Fragment>
             ))
               }
